@@ -1,18 +1,16 @@
 import { prisma } from "@/lib/prisma";
-import type { Menu, MenuType } from "@prisma/client";
 
 export default async function MenuHighlights() {
-  // Fetch data from the database
-  const [drinks, pastries] = await Promise.all([
-    prisma.menu.findMany({
-      where: { type: "DRINKS" },
-      orderBy: { name: "asc" },
-    }),
-    prisma.menu.findMany({
-      where: { type: "PASTRIES" },
-      orderBy: { name: "asc" },
-    }),
-  ]);
+  // Fetch data from the database (sequential to keep types simple)
+  const drinks = await prisma.menu.findMany({
+    where: { type: "DRINKS" }, // TS knows this needs to match the Menu.type enum
+    orderBy: { name: "asc" },
+  });
+
+  const pastries = await prisma.menu.findMany({
+    where: { type: "PASTRIES" },
+    orderBy: { name: "asc" },
+  });
 
   return (
     <section id="menu" className="py-20 md:py-32 bg-background">
@@ -22,7 +20,7 @@ export default async function MenuHighlights() {
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
             Signature Menu
           </h2>
-          <div className="w-16 h-1 bg-accent mx-auto"></div>
+          <div className="w-16 h-1 bg-accent mx-auto" />
         </div>
 
         {/* Drinks Section */}
@@ -31,7 +29,7 @@ export default async function MenuHighlights() {
             Signature Drinks
           </h3>
           <div className="grid md:grid-cols-3 gap-6">
-            {drinks.map((drink: Menu, index:number) => (
+            {drinks.map((drink, index) => (
               <div
                 key={drink.name}
                 className="reveal group bg-card border border-border rounded-lg p-6 hover:shadow-2xl hover:border-accent transition-all duration-300 cursor-pointer hover:scale-105"
@@ -48,7 +46,7 @@ export default async function MenuHighlights() {
                 <p className="text-foreground/70 text-sm leading-relaxed group-hover:text-foreground/90 transition-colors">
                   {drink.description}
                 </p>
-                <div className="mt-4 h-1 w-0 bg-accent group-hover:w-full transition-all duration-300"></div>
+                <div className="mt-4 h-1 w-0 bg-accent group-hover:w-full transition-all duration-300" />
               </div>
             ))}
           </div>
@@ -60,7 +58,7 @@ export default async function MenuHighlights() {
             Fresh Pastries
           </h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {pastries.map((pastry: Menu, index:number) => (
+            {pastries.map((pastry, index) => (
               <div
                 key={pastry.name}
                 className="reveal group bg-card border border-border rounded-lg p-6 hover:shadow-2xl hover:border-accent transition-all duration-300 cursor-pointer hover:scale-105"
@@ -77,7 +75,7 @@ export default async function MenuHighlights() {
                 <p className="text-foreground/70 text-sm leading-relaxed group-hover:text-foreground/90 transition-colors">
                   {pastry.description}
                 </p>
-                <div className="mt-4 h-1 w-0 bg-accent group-hover:w-full transition-all duration-300"></div>
+                <div className="mt-4 h-1 w-0 bg-accent group-hover:w-full transition-all duration-300" />
               </div>
             ))}
           </div>
