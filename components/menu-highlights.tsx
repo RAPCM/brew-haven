@@ -1,5 +1,4 @@
 import { prisma } from "@/lib/prisma";
-import type { Menu, MenuType } from "@prisma/client";
 
 export default async function MenuHighlights() {
   // Fetch data from the database
