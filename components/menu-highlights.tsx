@@ -3,13 +3,13 @@ import type { Menu, MenuType } from "@prisma/client";
 
 export default async function MenuHighlights() {
   // Fetch data from the database
-  const [drinks, pastries]: [Menu[], Menu[]] = await Promise.all([
+  const [drinks, pastries] = await Promise.all([
     prisma.menu.findMany({
-      where: { type: "DRINKS" as MenuType }, // or MenuType.DRINKS
+      where: { type: "DRINKS" },
       orderBy: { name: "asc" },
     }),
     prisma.menu.findMany({
-      where: { type: "PASTRIES" as MenuType }, // or MenuType.PASTRIES
+      where: { type: "PASTRIES" },
       orderBy: { name: "asc" },
     }),
   ]);
@@ -31,7 +31,7 @@ export default async function MenuHighlights() {
             Signature Drinks
           </h3>
           <div className="grid md:grid-cols-3 gap-6">
-            {drinks.map((drink: Menu, index: number) => (
+            {drinks.map((drink: Menu, index:number) => (
               <div
                 key={drink.name}
                 className="reveal group bg-card border border-border rounded-lg p-6 hover:shadow-2xl hover:border-accent transition-all duration-300 cursor-pointer hover:scale-105"
@@ -60,7 +60,7 @@ export default async function MenuHighlights() {
             Fresh Pastries
           </h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {pastries.map((pastry: Menu, index: number) => (
+            {pastries.map((pastry: Menu, index:number) => (
               <div
                 key={pastry.name}
                 className="reveal group bg-card border border-border rounded-lg p-6 hover:shadow-2xl hover:border-accent transition-all duration-300 cursor-pointer hover:scale-105"
