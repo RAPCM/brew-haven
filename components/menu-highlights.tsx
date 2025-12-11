@@ -13,6 +13,8 @@ export default async function MenuHighlights() {
     }),
   ]);
 
+  type MenuItem = (typeof drinks)[number];
+
   return (
     <section id="menu" className="py-20 md:py-32 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -30,7 +32,7 @@ export default async function MenuHighlights() {
             Signature Drinks
           </h3>
           <div className="grid md:grid-cols-3 gap-6">
-            {drinks.map((drink, index) => (
+            {drinks.map((drink: MenuItem, index) => (
               <div
                 key={drink.name}
                 className="reveal group bg-card border border-border rounded-lg p-6 hover:shadow-2xl hover:border-accent transition-all duration-300 cursor-pointer hover:scale-105"
@@ -59,7 +61,7 @@ export default async function MenuHighlights() {
             Fresh Pastries
           </h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {pastries.map((pastry, index) => (
+            {pastries.map((pastry: MenuItem, index) => (
               <div
                 key={pastry.name}
                 className="reveal group bg-card border border-border rounded-lg p-6 hover:shadow-2xl hover:border-accent transition-all duration-300 cursor-pointer hover:scale-105"
