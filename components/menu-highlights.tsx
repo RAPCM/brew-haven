@@ -1,59 +1,17 @@
-export default function MenuHighlights() {
-  const drinks = [
-    {
-      name: "Espresso",
-      description: "Pure, concentrated coffee excellence in every shot",
-      price: "$3.50",
-    },
-    {
-      name: "Cappuccino",
-      description: "Silky microfoam paired with rich espresso",
-      price: "$4.50",
-    },
-    {
-      name: "Latte",
-      description: "Smooth and creamy milk coffee perfection",
-      price: "$4.50",
-    },
-    {
-      name: "Cold Brew",
-      description: "Smooth, refreshing cold-steeped coffee delight",
-      price: "$4.00",
-    },
-    {
-      name: "Flat White",
-      description: "Dense, velvety microfoam with bold espresso",
-      price: "$4.75",
-    },
-    {
-      name: "Macchiato",
-      description: "Espresso marked with a touch of creamy foam",
-      price: "$4.25",
-    },
-  ];
+import { prisma } from "@/lib/prisma";
 
-  const pastries = [
-    {
-      name: "Croissant",
-      description: "Buttery, flaky French pastry",
-      price: "$3.50",
-    },
-    {
-      name: "Blueberry Muffin",
-      description: "Fresh blueberries in a soft, moist cake",
-      price: "$4.00",
-    },
-    {
-      name: "Chocolate Cake",
-      description: "Rich, decadent chocolate indulgence",
-      price: "$4.50",
-    },
-    {
-      name: "Almond Croissant",
-      description: "Flaky pastry with smooth almond filling",
-      price: "$4.25",
-    },
-  ];
+export default async function MenuHighlights() {
+  // Fetch data from the database
+  const [drinks, pastries] = await Promise.all([
+    prisma.menu.findMany({
+      where: { type: "DRINKS" },
+      orderBy: { name: "asc" },
+    }),
+    prisma.menu.findMany({
+      where: { type: "PASTRIES" },
+      orderBy: { name: "asc" },
+    }),
+  ]);
 
   return (
     <section id="menu" className="py-20 md:py-32 bg-background">
@@ -82,7 +40,9 @@ export default function MenuHighlights() {
                   <h4 className="text-xl font-bold text-foreground">
                     {drink.name}
                   </h4>
-                  <span className="text-accent font-bold">{drink.price}</span>
+                  <span className="text-accent font-bold">
+                    €{drink.price.toNumber().toFixed(2)}
+                  </span>
                 </div>
                 <p className="text-foreground/70 text-sm leading-relaxed group-hover:text-foreground/90 transition-colors">
                   {drink.description}
@@ -110,7 +70,7 @@ export default function MenuHighlights() {
                     {pastry.name}
                   </h4>
                   <span className="text-accent font-bold text-sm">
-                    {pastry.price}
+                    €{pastry.price.toNumber().toFixed(2)}
                   </span>
                 </div>
                 <p className="text-foreground/70 text-sm leading-relaxed group-hover:text-foreground/90 transition-colors">
